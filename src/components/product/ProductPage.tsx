@@ -12,6 +12,7 @@ import { OBJECTS } from "@/lib/objects";
 import { photoUrl } from "@/lib/photos";
 import type { Product } from "@/lib/data";
 import { PRODUCT_ROUTES, productAnswer, type ProductDetail } from "@/lib/product-detail";
+import ProductDescription from "./ProductDescription";
 import ProductGallery from "./ProductGallery";
 import ProductStory from "./ProductStory";
 
@@ -49,7 +50,7 @@ export default function ProductPage({ detail: d, related }: Props) {
               <span className="sr">{d.name}</span>
               <Chars text={d.name} />
             </h1>
-            <p className="pd-intro">{d.intro}</p>
+            <p className="pd-intro">{d.short_description}</p>
 
             <div className="pd-price">
               <b>{d.price}</b>
@@ -82,7 +83,9 @@ export default function ProductPage({ detail: d, related }: Props) {
           </aside>
         </section>
 
-        <ProductStory chapters={d.story} />
+        <ProductDescription text={d.description} />
+
+        {d.story && d.story.length > 0 && <ProductStory chapters={d.story} />}
 
         <section className="pd-spec" aria-labelledby="pd-spec-h">
           <div className="pd-spec-head">
