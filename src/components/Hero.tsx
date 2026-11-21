@@ -1,38 +1,50 @@
 "use client";
 import { useEffect, useRef, useState, type CSSProperties } from "react";
-import { HERO_OBJS } from "@/lib/data";
+import { CAMPAIGNS } from "@/lib/data";
 import { OBJECTS } from "@/lib/objects";
-import { pointer, useReveal } from "@/lib/hooks";
+import { pointer } from "@/lib/hooks";
+import { PHOTOS_READY } from "@/lib/photos";
 import { Chars } from "./Chars";
-import { MagButton, MagLink } from "./Magnetic";
+import { MagLink } from "./Magnetic";
+import { ProductImage } from "./ProductImage";
 
 type Particle = { x: number; y: number; vx: number; vy: number; r: number; a: number };
 
-export default function Hero({ onMusa }: { onMusa: () => void }) {
-  const wordRef = useRef<HTMLHeadingElement>(null);
-  const bigRef = useRef<HTMLDivElement>(null);
+/** Hero compacto: carrusel de campañas con transición de iris, parallax por cursor y polvo luminoso. */
+export default function Hero() {
+  const stageRef = useRef<HTMLElement>(null);
   const dustRef = useRef<HTMLCanvasElement>(null);
-  const objRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const [cur, setCur] = useState(0);
+  const [prev, setPrev] = useState(0);
   const [ready, setReady] = useState(false);
-  const kicker = useReveal<HTMLParagraphElement>();
-  const sub = useReveal<HTMLParagraphElement>();
-  const cta = useReveal<HTMLDivElement>();
+  const n = CAMPAIGNS.length;
 
-  // Dispara la entrada de las letras del título tras 150 ms.
+  const go = (to: number) => {
+    setPrev(cur);
+    setCur(((to % n) + n) % n);
+  };
+
+  // Revelado de la marca al cargar.
   useEffect(() => {
     const t = window.setTimeout(() => setReady(true), 150);
     return () => clearTimeout(t);
   }, []);
 
-  // Parallax de objetos por cursor y scroll, ondulación de letras y desplazamiento de "2027".
+  // Avance automático cada 7 s.
   useEffect(() => {
-    const fine = window.matchMedia("(pointer:fine)").matches ? 1 : 0;
-    const letters = Array.from(wordRef.current?.querySelectorAll<HTMLElement>(".c") ?? []);
-    let mx = 0,
-      my = 0,
-      cx = 0,
-      cy = 0,
-      raf = 0;
+    const t = window.setTimeout(() => {
+      setPrev(cur);
+      setCur((cur + 1) % n);
+    }, 7000);
+    return () => clearTimeout(t);
+  }, [cur, n]);
+
+  // Parallax por variables CSS (--mx, --my) con interpolación suave. Más suave en táctil.
+  useEffect(() => {
+    const el = stageRef.current;
+    if (!el) return;
+    const strength = window.matchMedia("(pointer:fine)").matches ? 1 : 0.35;
+    let mx = 0, my = 0, cx = 0, cy = 0, raf = 0;
     const onMove = (e: PointerEvent) => {
       mx = (e.clientX / innerWidth) * 2 - 1;
       my = (e.clientY / innerHeight) * 2 - 1;
@@ -40,17 +52,8 @@ export default function Hero({ onMusa }: { onMusa: () => void }) {
     const frame = () => {
       cx += (mx - cx) * 0.06;
       cy += (my - cy) * 0.06;
-      const sy = scrollY;
-      HERO_OBJS.forEach((o, i) => {
-        const el = objRefs.current[i];
-        if (el)
-          el.style.transform = `translate3d(${cx * o.d * 34}px, ${cy * o.d * 34 - sy * 0.25 * o.d}px, 0) rotate(${cx * o.d * 5}deg)`;
-      });
-      if (bigRef.current)
-        bigRef.current.style.transform = `translate(-50%, calc(-50% + ${sy * 0.3}px)) translateX(${cx * -30}px)`;
-      letters.forEach((el, i) =>
-        el.style.setProperty("--sk", (Math.sin(i * 0.9 + cx * 2.5) * 5 * fine).toFixed(2) + "deg"),
-      );
+      el.style.setProperty("--mx", (cx * strength).toFixed(3));
+      el.style.setProperty("--my", (cy * strength).toFixed(3));
       raf = requestAnimationFrame(frame);
     };
     addEventListener("pointermove", onMove, { passive: true });
@@ -61,7 +64,7 @@ export default function Hero({ onMusa }: { onMusa: () => void }) {
     };
   }, []);
 
-  // Polvo luminoso que se aparta del cursor.
+  // Polvo luminoso de baja densidad que se aparta del cursor.
   useEffect(() => {
     const cv = dustRef.current;
     const g = cv?.getContext("2d");
@@ -73,14 +76,14 @@ export default function Hero({ onMusa }: { onMusa: () => void }) {
       const r = cv.getBoundingClientRect();
       cv.width = r.width * dpr;
       cv.height = r.height * dpr;
-      const n = Math.round((r.width * r.height) / 9000);
-      P = Array.from({ length: n }, () => ({
+      const count = Math.round((r.width * r.height) / 16000);
+      P = Array.from({ length: count }, () => ({
         x: Math.random() * cv.width,
         y: Math.random() * cv.height,
         vx: 0,
         vy: 0,
-        r: (Math.random() * 1.6 + 0.3) * dpr,
-        a: Math.random() * 0.6 + 0.2,
+        r: (Math.random() * 1.4 + 0.3) * dpr,
+        a: Math.random() * 0.5 + 0.15,
       }));
     };
     const onMove = (e: PointerEvent) => {
@@ -91,15 +94,12 @@ export default function Hero({ onMusa }: { onMusa: () => void }) {
       const r = cv.getBoundingClientRect();
       const mx = (pointer.x - r.left) * dpr;
       const my = (pointer.y - r.top) * dpr;
-      const R = 160 * dpr;
+      const R = 140 * dpr;
       g.clearRect(0, 0, cv.width, cv.height);
       for (const p of P) {
-        const dx = p.x - mx,
-          dy = p.y - my,
-          d2 = dx * dx + dy * dy;
+        const dx = p.x - mx, dy = p.y - my, d2 = dx * dx + dy * dy;
         if (d2 < R * R) {
-          const d = Math.sqrt(d2) || 1,
-            f = (1 - d / R) * 0.9;
+          const d = Math.sqrt(d2) || 1, f = (1 - d / R) * 0.8;
           p.vx += (dx / d) * f;
           p.vy += (dy / d) * f;
         }
@@ -131,46 +131,64 @@ export default function Hero({ onMusa }: { onMusa: () => void }) {
   }, []);
 
   return (
-    <header className="hero" id="top">
-      <canvas ref={dustRef} />
-      <div className="big-year" ref={bigRef} aria-hidden="true">2027</div>
-      <div className="objs">
-        {HERO_OBJS.map((o, i) => {
-          const C = OBJECTS[o.k];
-          return (
-            <div
-              key={o.k}
-              ref={(el) => {
-                objRefs.current[i] = el;
-              }}
-              className={`obj ${o.cls ?? ""}`}
-              style={{ left: o.x, top: o.y, width: o.s, "--i": i } as CSSProperties}
-            >
-              <C />
+    <section className="stage" ref={stageRef} id="top" aria-roledescription="carrusel" aria-label="Campañas destacadas">
+      <canvas ref={dustRef} className="dust" aria-hidden="true" />
+      <h1 className={`wordmark ${ready ? "is-in" : ""}`} aria-label="ARTEMIS">
+        <Chars text="ARTEMIS" />
+      </h1>
+
+      {CAMPAIGNS.map((s, i) => {
+        const C = OBJECTS[s.o];
+        const active = i === cur;
+        const isPrev = i === prev && prev !== cur;
+        return (
+          <article
+            key={s.t}
+            className={`slide ${active ? "is-active" : ""} ${isPrev ? "is-prev" : ""}`}
+            style={{ "--c": s.c } as CSSProperties}
+            aria-hidden={!active}
+          >
+            {PHOTOS_READY && (
+              <div className="slide-photo">
+                <ProductImage src={s.img} alt={s.alt} tone={s.c} sizes="100vw" priority={i === 0} />
+              </div>
+            )}
+            <div className="slide-art" style={{ "--d": 1 } as CSSProperties}>
+              <div className="slide-art-inner">
+                <C className="art-svg" />
+              </div>
             </div>
-          );
-        })}
+            <div className="slide-copy">
+              <p className="kicker">{s.k}</p>
+              <h2 className="s-title">
+                <Chars text={s.t} />
+              </h2>
+              <p className="s-p">{s.p}</p>
+              <div className="s-meta">
+                <span>{s.pr}</span>
+                <MagLink className="btn" href="#piezas">Ver piezas</MagLink>
+              </div>
+            </div>
+          </article>
+        );
+      })}
+
+      <div className="thumbs" role="group" aria-label="Elegir campaña">
+        {CAMPAIGNS.map((s, i) => (
+          <button
+            key={s.t}
+            type="button"
+            className={`thumb ${i === cur ? "on" : ""}`}
+            onClick={() => go(i)}
+            aria-label={`Ver ${s.t}`}
+            aria-pressed={i === cur}
+          >
+            <span>{`0${i + 1}`}</span>
+            {s.k.split("— ")[1]}
+            {i === cur && <i key={cur} className="tbar" />}
+          </button>
+        ))}
       </div>
-      <div className="title">
-        <p ref={kicker.ref} className={`kicker rv ${kicker.cls}`}>
-          Colección 2027 · segunda selección
-        </p>
-        <h1 ref={wordRef} className={`word ${ready ? "is-in" : ""}`} aria-label="ARTEMIS">
-          <Chars text="ARTEMIS" />
-        </h1>
-        <p ref={sub.ref} className={`hero-sub rv ${sub.cls}`}>
-          Objetos con historia, elegidos uno por uno. Vintage, modernos, raros. Nada de catálogo infinito: pocas piezas, bien contadas.
-        </p>
-        <div ref={cta.ref} className={`cta-row rv ${cta.cls}`}>
-          <MagLink className="btn solid" href="#piezas">Entrar a la colección</MagLink>
-          <MagButton className="btn" type="button" onClick={onMusa}>Hablar con Musa</MagButton>
-        </div>
-      </div>
-      <div className="hero-foot">
-        <span>Piezas únicas</span>
-        <span>Envíos a todo Chile</span>
-        <span>Deslizá ↓</span>
-      </div>
-    </header>
+    </section>
   );
 }

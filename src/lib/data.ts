@@ -1,6 +1,6 @@
 import type { ObjectKey } from "./objects";
 
-/* Datos ficticios de demostración. */
+/* Datos ficticios de demostración. Las rutas de fotos siguen la convención de public/photos/ (ver CREDITS.md). */
 
 export const WORDS = [
   "Segunda selección",
@@ -11,24 +11,28 @@ export const WORDS = [
   "Objetos con historia",
 ];
 
-export type Slide = { k: string; t: string; p: string; o: ObjectKey; c: string; pr: string };
+export type Campaign = { k: string; t: string; p: string; o: ObjectKey; c: string; pr: string; img: string; alt: string };
 
-export const SLIDES: Slide[] = [
+export const CAMPAIGNS: Campaign[] = [
   {
     k: "Campaña I — El tiempo",
     t: "La hora prestada",
-    p: "Relojes de bolsillo y de mesa que perdieron a su dueño y encontraron otra casa. Cada uno marca una hora distinta.",
+    p: "Relojes de bolsillo y de mesa que perdieron a su dueño y encontraron otra casa.",
     o: "watch",
     c: "#2F4B57",
     pr: "Desde $89.000",
+    img: "/photos/campana-tiempo.jpg",
+    alt: "Relojes de bolsillo sobre papel de época",
   },
   {
     k: "Campaña II — La luna",
     t: "Lo que guarda la noche",
-    p: "Lámparas, espejos y objetos de nocturno. Una selección para quien mira el cielo desde el balcón.",
+    p: "Lámparas, espejos y objetos de nocturno para quien mira el cielo desde el balcón.",
     o: "crescent",
     c: "#5A2E24",
-    pr: "Desde $145.000",
+    pr: "Desde $98.000",
+    img: "/photos/campana-luna.jpg",
+    alt: "Objetos de bronce iluminados en una habitación oscura",
   },
   {
     k: "Campaña III — Barro",
@@ -37,6 +41,8 @@ export const SLIDES: Slide[] = [
     o: "vase",
     c: "#6B3B2C",
     pr: "Desde $56.000",
+    img: "/photos/campana-barro.jpg",
+    alt: "Jarrones de gres sobre una mesa de madera",
   },
   {
     k: "Campaña IV — Lente",
@@ -45,30 +51,43 @@ export const SLIDES: Slide[] = [
     o: "camera",
     c: "#1E3138",
     pr: "Desde $210.000",
+    img: "/photos/campana-lente.jpg",
+    alt: "Cámara de fuelle junto a una ventana",
   },
 ];
 
-export type Product = { n: string; t: string; m: string; p: string; o: ObjectKey; bg: string };
+export const CATEGORIES = ["Todo", "Tiempo", "Hogar", "Foto", "Cerámica", "Luz", "Viaje"];
+
+export type Product = { id: string; t: string; cat: string; m: string; p: string; o: ObjectKey; bg: string; alt: string };
 
 export const PRODUCTS: Product[] = [
-  { n: "014", t: "Compás de latón", m: "Navegación · 1931", p: "$68.000", o: "compass", bg: "#D9CBB0" },
-  { n: "022", t: "Esfera de vidrio", m: "Decoración · pieza única", p: "$124.000", o: "orb", bg: "#C9D6CF" },
-  { n: "031", t: "Reloj de bolsillo", m: "Tiempo · segunda selección", p: "$89.000", o: "watch", bg: "#E6D3B8" },
-  { n: "047", t: "Cámara de fuelle", m: "Foto · curiosidad", p: "$210.000", o: "camera", bg: "#CDD3D6" },
-  { n: "058", t: "Jarrón de gres", m: "Cerámica · hecha a mano", p: "$56.000", o: "vase", bg: "#E3C7B6" },
-  { n: "069", t: "Luna de bronce", m: "Objeto · diseño", p: "$145.000", o: "crescent", bg: "#DCCBA8" },
+  { id: "compas", t: "Compás de latón", cat: "Viaje", m: "Navegación · 1931", p: "$68.000", o: "compass", bg: "#D9CBB0", alt: "Compás de latón sobre un mapa antiguo" },
+  { id: "esfera", t: "Esfera de vidrio", cat: "Hogar", m: "Pieza única", p: "$124.000", o: "orb", bg: "#C9D6CF", alt: "Esfera de vidrio soplado" },
+  { id: "reloj", t: "Reloj de bolsillo", cat: "Tiempo", m: "Segunda selección", p: "$89.000", o: "watch", bg: "#E6D3B8", alt: "Reloj de bolsillo abierto" },
+  { id: "camara", t: "Cámara de fuelle", cat: "Foto", m: "Curiosidad", p: "$210.000", o: "camera", bg: "#CDD3D6", alt: "Cámara de fuelle de madera" },
+  { id: "jarron", t: "Jarrón de gres", cat: "Cerámica", m: "Hecho a mano", p: "$56.000", o: "vase", bg: "#E3C7B6", alt: "Jarrón de gres con esmalte mate" },
+  { id: "luna", t: "Luna de bronce", cat: "Luz", m: "Objeto de diseño", p: "$145.000", o: "crescent", bg: "#DCCBA8", alt: "Figura de bronce con forma de luna" },
+  { id: "lampara", t: "Lámpara de mesa", cat: "Luz", m: "Vidrio opalino", p: "$98.000", o: "orb", bg: "#D6DDD4", alt: "Lámpara de mesa de vidrio opalino" },
+  { id: "reloj-pared", t: "Reloj de pared", cat: "Tiempo", m: "Esfera crema", p: "$132.000", o: "watch", bg: "#EADBC4", alt: "Reloj de pared con esfera crema" },
 ];
 
-export type HeroObj = { k: ObjectKey; s: number; x: string; y: string; d: number; cls?: string };
+export type Collection = { id: string; t: string; n: string; o: ObjectKey; tone: string; alt: string };
 
-export const HERO_OBJS: HeroObj[] = [
-  { k: "orb", s: 230, x: "7%", y: "22%", d: 0.7 },
-  { k: "watch", s: 300, x: "72%", y: "10%", d: 1.25, cls: "hide-m" },
-  { k: "vase", s: 190, x: "18%", y: "62%", d: 0.95 },
-  { k: "compass", s: 150, x: "70%", y: "60%", d: 0.45, cls: "hide-m" },
-  { k: "camera", s: 150, x: "52%", y: "4%", d: 1.6, cls: "hide-m" },
-  { k: "crescent", s: 130, x: "88%", y: "40%", d: 0.8 },
+export const COLLECTIONS: Collection[] = [
+  { id: "tiempo", t: "Tiempo prestado", n: "24 piezas", o: "watch", tone: "#2F4B57", alt: "Relojes antiguos sobre una mesa de madera" },
+  { id: "luz", t: "Luz de noche", n: "18 piezas", o: "crescent", tone: "#5A2E24", alt: "Lámparas y objetos de bronce" },
+  { id: "barro", t: "Barro y fuego", n: "31 piezas", o: "vase", tone: "#6B3B2C", alt: "Cerámica artesanal en estantes" },
 ];
+
+export const EDITORIAL = {
+  k: "Historia de la semana",
+  t: "Un reloj que tardó cuarenta años en llegar a su casa",
+  p: "Lo encontramos en un cajón de una casa de campo del sur. Tenía la cuerda rota, la tapa rayada y una dedicatoria en el interior. Lo restauramos sin borrar nada de eso.",
+  img: "/photos/ed-reloj.jpg",
+  alt: "Reloj de bolsillo sobre tela de lino",
+  tone: "#E6D3B8",
+  o: "watch" as ObjectKey,
+};
 
 export const MUSA_GREETING =
   "Hola, soy Musa. Curo lo que entra a Artemis: si es de segunda mano pero todavía tiene algo para decir, pasa por mí. ¿Qué andás buscando?";
@@ -80,7 +99,7 @@ export function musaAnswer(q: string): string {
   if (k.includes("segunda"))
     return "Son piezas que tuvieron una vida antes. Las revisamos, las limpiamos y les contamos su historia. Si algo está gastado, lo decimos sin vueltas.";
   if (k.includes("regal"))
-    return "Buena elección. Para regalar te propongo el Reloj de bolsillo: no hay dos iguales y siempre queda bien. ¿Para quién es?";
+    return "Buena elección. Para regalar te propongo el reloj de bolsillo: no hay dos iguales y siempre queda bien. ¿Para quién es?";
   if (k.includes("vintage"))
     return 'Vintage con criterio, nada de "retro" pegado con cinta. Cada pieza tiene que tener una razón para estar acá.';
   if (k.includes("precio") || k.includes("cuánto") || k.includes("cuanto"))

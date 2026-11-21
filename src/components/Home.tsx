@@ -1,15 +1,16 @@
 "use client";
 import { useState } from "react";
-import Campaigns from "./Campaigns";
+import Collections from "./Collections";
 import Cursor from "./Cursor";
+import Editorial from "./Editorial";
 import Footer from "./Footer";
 import Hero from "./Hero";
 import Musa from "./Musa";
 import { Nav, Progress } from "./Nav";
-import Pieces from "./Pieces";
+import Products from "./Products";
 import Ticker from "./Ticker";
 
-/** Composición de la portada. Mantiene el estado compartido (cajón y chat de Musa). */
+/** Composición de la portada V2. Mantiene el estado compartido (cajón y chat de Musa). */
 export default function Home() {
   const [cajon, setCajon] = useState<string[]>([]);
   const [musaOpen, setMusaOpen] = useState(false);
@@ -19,10 +20,11 @@ export default function Home() {
       <Cursor />
       <Progress />
       <Nav count={cajon.length} />
-      <Hero onMusa={() => setMusaOpen(true)} />
+      <Hero />
       <Ticker />
-      <Campaigns />
-      <Pieces added={cajon} onAdd={(n) => setCajon((c) => (c.includes(n) ? c : [...c, n]))} />
+      <Collections />
+      <Products added={cajon} onAdd={(id) => setCajon((c) => (c.includes(id) ? c : [...c, id]))} />
+      <Editorial />
       <Footer />
       <Musa open={musaOpen} setOpen={setMusaOpen} />
     </>
