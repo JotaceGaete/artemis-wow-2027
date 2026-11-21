@@ -106,7 +106,7 @@ export default function Musa({
             autoComplete="off"
             aria-label="Mensaje para Musa"
           />
-          <button type="submit">Enviar</button>
+          <button type="submit" disabled={!text.trim()}>Enviar</button>
         </form>
       </div>
       <MagButton className="musa-btn" type="button" aria-label="Abrir chat con Musa" onClick={() => setOpen(!open)}>
