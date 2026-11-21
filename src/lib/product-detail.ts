@@ -26,6 +26,8 @@ export type ProductDetail = {
   story: StoryChapter[];
   specs: { k: string; v: string }[];
   condition: { grade: string; notes: string[] };
+  /** Garantías y servicios de compra (datos de demostración). */
+  trust: string[];
   care: { winding: string; cleaning: string; gift: string; shipping: string };
   musaGreeting: string;
   musaChips: string[];
@@ -101,6 +103,11 @@ const FIXTURES: Record<string, ProductDetail> = {
         "Mecanismo revisado y lubricado",
       ],
     },
+    trust: [
+      "Revisión de mecanismo y limpieza antes de publicar",
+      "Garantía de funcionamiento de 30 días",
+      "Cambio o devolución dentro de 14 días",
+    ],
     care: {
       winding: "Dale cuerda suave cada mañana, unas pocas vueltas, sin forzar la corona.",
       cleaning: "Un paño seco y suave. Nada de productos abrasivos sobre el latón.",

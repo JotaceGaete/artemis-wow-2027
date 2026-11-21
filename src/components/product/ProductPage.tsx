@@ -44,7 +44,7 @@ export default function ProductPage({ detail: d, related }: Props) {
           <ProductGallery items={d.gallery} name={d.name} tone={d.tone} />
 
           <aside className="pd-buy" aria-label="Compra">
-            <p className="kicker dark">{d.kicker}</p>
+            <p className="kicker">{d.kicker}</p>
             <h1 className="pd-title">
               <span className="sr">{d.name}</span>
               <Chars text={d.name} />
@@ -73,6 +73,12 @@ export default function ProductPage({ detail: d, related }: Props) {
                 Preguntar a Musa
               </button>
             </div>
+
+            <ul className="pd-trust" aria-label="Garantías (datos de demostración)">
+              {d.trust.map((t) => (
+                <li key={t}>{t}</li>
+              ))}
+            </ul>
           </aside>
         </section>
 
@@ -80,7 +86,7 @@ export default function ProductPage({ detail: d, related }: Props) {
 
         <section className="pd-spec" aria-labelledby="pd-spec-h">
           <div className="pd-spec-head">
-            <p className="kicker dark">Ficha técnica</p>
+            <p className="kicker">Ficha técnica</p>
             <h2 id="pd-spec-h" className="pd-h2">Lo que tiene y lo que le falta</h2>
           </div>
           <dl className="pd-dl">

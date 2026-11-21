@@ -71,7 +71,9 @@ export default function ProductGallery({ items, name, tone }: Props) {
                     tone={tone}
                     sizes="(max-width:900px) 100vw, 56vw"
                     priority={k === 0}
-                  />
+                  >
+                    <Watch className="art-svg" />
+                  </ProductImage>
                 ) : (
                   <ProductImage alt={it.caption} tone={tone}>
                     <Watch className="art-svg" />
