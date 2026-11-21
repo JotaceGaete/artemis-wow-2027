@@ -17,6 +17,9 @@ export default function ProductGallery({ items, name, tone }: Props) {
   const [origin, setOrigin] = useState("50% 50%");
   const startX = useRef<number | null>(null);
   const n = items.length;
+  /** Fuente de la imagen: registro verificado (demo) o URL remota (catálogo). */
+  const srcOf = (it: GalleryItem): string | undefined =>
+    it.kind === "photo" ? photoUrl(it.photo) : it.kind === "remote" ? it.src : undefined;
 
   const go = (k: number) => {
     setZoom(false);
@@ -64,9 +67,9 @@ export default function ProductGallery({ items, name, tone }: Props) {
                 style={{ transformOrigin: origin }}
                 onClick={() => k === i && setZoom((z) => !z)}
               >
-                {it.kind === "photo" ? (
+                {srcOf(it) ? (
                   <ProductImage
-                    src={photoUrl(it.photo)}
+                    src={srcOf(it)}
                     alt={it.caption}
                     tone={tone}
                     sizes="(max-width:900px) 100vw, 56vw"
@@ -107,9 +110,9 @@ export default function ProductGallery({ items, name, tone }: Props) {
             onClick={() => go(k)}
             style={{ background: tone }}
           >
-            {it.kind === "photo" ? (
+            {srcOf(it) ? (
               <img
-                src={photoUrl(it.photo)}
+                src={srcOf(it)}
                 alt=""
                 loading="lazy"
                 onError={(e) => { e.currentTarget.style.display = "none"; }}

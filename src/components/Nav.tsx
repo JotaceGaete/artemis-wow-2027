@@ -2,7 +2,8 @@
 import { useEffect, useRef, useState } from "react";
 
 /** Navegación superior con menú móvil y contador del cajón. `base` apunta a la portada desde otras páginas. */
-export function Nav({ count, base = "" }: { count: number; base?: string }) {
+/** `live`: tienda real. Solo enlaza secciones que existen en ese modo (Colecciones se oculta). */
+export function Nav({ count, base = "", live = false }: { count: number; base?: string; live?: boolean }) {
   const [open, setOpen] = useState(false);
   return (
     <nav className="nav" aria-label="Principal">
@@ -11,8 +12,8 @@ export function Nav({ count, base = "" }: { count: number; base?: string }) {
         {open ? "Cerrar" : "Menú"}
       </button>
       <div className={`links ${open ? "open" : ""}`} onClick={() => setOpen(false)}>
-        <a href={`${base}#campanas`}>Campañas</a>
-        <a href={`${base}#colecciones`}>Colecciones</a>
+        <a href={live ? `${base}#top` : `${base}#campanas`}>Campañas</a>
+        {!live && <a href={`${base}#colecciones`}>Colecciones</a>}
         <a href={`${base}#piezas`}>Piezas</a>
         <a href={`${base}#musa`}>Musa</a>
       </div>

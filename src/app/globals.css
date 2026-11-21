@@ -273,3 +273,15 @@ body::after{content:"";position:fixed;inset:-50%;pointer-events:none;z-index:900
   .c>span{transform:none}
   .slide-art .art-svg{transform:none}
 }
+
+/* Estado de error controlado del catálogo (modo Walinka). */
+.catalog-unavailable {
+  min-height: 70vh;
+  display: grid;
+  place-content: center;
+  gap: 12px;
+  padding: var(--pad);
+  text-align: center;
+  color: var(--c-text);
+  font-family: var(--sans);
+}

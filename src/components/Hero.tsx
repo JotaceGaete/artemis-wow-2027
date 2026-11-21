@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useRef, useState, type CSSProperties } from "react";
-import { CAMPAIGNS } from "@/lib/data";
+import type { HeroSlide } from "@/lib/view-types";
+import { ProductImage } from "./ProductImage";
 import { OBJECTS } from "@/lib/objects";
 import { pointer } from "@/lib/hooks";
 import { Chars } from "./Chars";
@@ -9,13 +10,13 @@ import { MagLink } from "./Magnetic";
 type Particle = { x: number; y: number; vx: number; vy: number; r: number; a: number };
 
 /** Hero compacto: carrusel de campañas con transición de iris, parallax por cursor y polvo luminoso. */
-export default function Hero() {
+export default function Hero({ slides }: { slides: HeroSlide[] }) {
   const stageRef = useRef<HTMLElement>(null);
   const dustRef = useRef<HTMLCanvasElement>(null);
   const [cur, setCur] = useState(0);
   const [prev, setPrev] = useState(0);
   const [ready, setReady] = useState(false);
-  const n = CAMPAIGNS.length;
+  const n = slides.length;
 
   const go = (to: number) => {
     setPrev(cur);
@@ -137,30 +138,32 @@ export default function Hero() {
         <Chars text="ARTEMIS" />
       </h1>
 
-      {CAMPAIGNS.map((s, i) => {
-        const C = OBJECTS[s.o];
+      {slides.map((s, i) => {
+        const C = s.art ? OBJECTS[s.art] : null;
         const active = i === cur;
         const isPrev = i === prev && prev !== cur;
         return (
           <article
-            key={s.t}
+            key={s.key}
             className={`slide ${active ? "is-active" : ""} ${isPrev ? "is-prev" : ""}`}
-            style={{ "--c": s.c } as CSSProperties}
+            style={{ "--c": s.color } as CSSProperties}
             aria-hidden={!active}
           >
             <div className="slide-art" style={{ "--d": 1 } as CSSProperties}>
               <div className="slide-art-inner">
-                <C className="art-svg" />
+                <ProductImage src={s.photo ?? undefined} alt={s.title} tone={s.color} sizes="(max-width:900px) 90vw, 40vw">
+                  {C && <C className="art-svg" />}
+                </ProductImage>
               </div>
             </div>
             <div className="slide-copy">
-              <p className="kicker">{s.k}</p>
+              <p className="kicker">{s.kicker}</p>
               <h2 className="s-title">
-                <Chars text={s.t} />
+                <Chars text={s.title} />
               </h2>
-              <p className="s-p">{s.p}</p>
+              <p className="s-p">{s.text}</p>
               <div className="s-meta">
-                <span>{s.pr}</span>
+                <span>{s.price}</span>
                 <MagLink className="btn" href="#piezas">Ver piezas</MagLink>
               </div>
             </div>
@@ -169,17 +172,17 @@ export default function Hero() {
       })}
 
       <div className="thumbs" role="group" aria-label="Elegir campaña">
-        {CAMPAIGNS.map((s, i) => (
+        {slides.map((s, i) => (
           <button
-            key={s.t}
+            key={s.key}
             type="button"
             className={`thumb ${i === cur ? "on" : ""}`}
             onClick={() => go(i)}
-            aria-label={`Ver ${s.t}`}
+            aria-label={`Ver ${s.title}`}
             aria-pressed={i === cur}
           >
             <span>{`0${i + 1}`}</span>
-            {s.k.split("— ")[1]}
+            {s.thumb}
             {i === cur && <i key={cur} className="tbar" />}
           </button>
         ))}

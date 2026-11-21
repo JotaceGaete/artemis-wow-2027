@@ -4,6 +4,7 @@ import type { ObjectKey } from "@/lib/objects";
 /** Una vista de la galería: fotografía verificada o ilustración SVG de respaldo. */
 export type GalleryItem =
   | { kind: "photo"; photo: string; caption: string }
+  | { kind: "remote"; src: string; caption: string }
   | { kind: "art"; caption: string };
 
 export type StoryChapter = { n: string; t: string; p: string };
@@ -43,6 +44,9 @@ export type ProductDetail = ProductContent & {
   musaGreeting: string;
   musaChips: string[];
 };
+
+/** Slugs de demostración disponibles en modo demo. */
+export const DEMO_SLUGS = ["reloj-vintage"];
 
 /** Rutas de producto. Las piezas sin entrada siguen en la portada. */
 export const PRODUCT_ROUTES: Record<string, string> = {
