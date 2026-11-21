@@ -151,9 +151,13 @@ export default function Hero({ slides }: { slides: HeroSlide[] }) {
           >
             <div className="slide-art" style={{ "--d": 1 } as CSSProperties}>
               <div className="slide-art-inner">
-                <ProductImage src={s.photo ?? undefined} alt={s.title} tone={s.color} sizes="(max-width:900px) 90vw, 40vw">
-                  {C && <C className="art-svg" />}
-                </ProductImage>
+                {s.photo ? (
+                  <div className="slide-photo-frame">
+                    <ProductImage src={s.photo} alt={s.title} tone={s.color} fit="contain" sizes="(max-width:900px) 90vw, 40vw" />
+                  </div>
+                ) : (
+                  <ProductImage alt={s.title} tone={s.color}>{C && <C className="art-svg" />}</ProductImage>
+                )}
               </div>
             </div>
             <div className="slide-copy">

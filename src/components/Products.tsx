@@ -59,7 +59,7 @@ export default function Products({
           const done = added.includes(p.id);
           const media = (
             <>
-              <ProductImage src={p.image ?? undefined} alt={p.alt} tone={p.tone} sizes="(max-width:900px) 50vw, 25vw">
+              <ProductImage src={p.image ?? undefined} alt={p.alt} tone={p.tone} fit="contain" sizes="(max-width:900px) 50vw, 25vw">
                 {C && <C className="art-svg" />}
               </ProductImage>
               {p.category && <span className="tag">{p.category}</span>}

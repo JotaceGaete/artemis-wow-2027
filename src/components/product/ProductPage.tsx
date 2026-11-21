@@ -165,7 +165,7 @@ export default function ProductPage({ view: d, related, demo }: Props) {
                   <article key={p.id} className="rel-card">
                     <Link href={p.href ?? "/#piezas"} className="rel-link">
                       <div className="rel-img" style={{ "--bg": p.tone } as CSSProperties}>
-                        <ProductImage src={p.image ?? undefined} alt={p.alt} tone={p.tone} sizes="(max-width:900px) 70vw, 25vw">
+                        <ProductImage src={p.image ?? undefined} alt={p.alt} tone={p.tone} fit="contain" sizes="(max-width:900px) 70vw, 25vw">
                           {C && <C className="art-svg" />}
                         </ProductImage>
                       </div>

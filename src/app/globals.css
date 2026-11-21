@@ -143,15 +143,15 @@ body::after{content:"";position:fixed;inset:-50%;pointer-events:none;z-index:900
 .filters button{border:1px solid var(--c-line);color:var(--c-text);border-radius:999px;padding:8px 14px;font-size:var(--f-14);transition:background .3s,color .3s,border-color .3s}
 .filters button:hover{border-color:var(--c-primary)}
 .filters button[aria-pressed="true"]{background:var(--c-primary);color:var(--c-on-primary);border-color:var(--c-primary)}
-.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(14px,1.8vw,24px)}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(10px,1.2vw,16px)}
 .pcard{perspective:1000px}
 .pcard-in{background:var(--c-surface);border-radius:6px;overflow:hidden;transform-style:preserve-3d;transform:rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transition:transform .5s cubic-bezier(.16,1,.3,1);box-shadow:var(--c-shadow-min)}
-.pimg{position:relative;aspect-ratio:4/5;overflow:hidden;background:var(--bg)}
+.pimg{position:relative;aspect-ratio:1/1;overflow:hidden;background:var(--bg)}
 .tag{position:absolute;left:10px;top:10px;z-index:2;background:var(--c-glass);font-family:var(--sans);font-size:var(--f-12);padding:4px 9px;border-radius:999px;color:var(--c-text)}
-.pbody{padding:14px 14px 16px}
+.pbody{padding:12px 12px 14px;display:flex;flex-direction:column;flex:1}
 .pbody h3{font-family:var(--sans);font-weight:600;font-size:var(--f-20);line-height:1.2;letter-spacing:-.01em}
 .pbody .micro{margin-top:4px}
-.prow{display:flex;justify-content:space-between;align-items:center;margin-top:12px;gap:8px}
+.prow{display:flex;justify-content:space-between;align-items:center;margin-top:auto;padding-top:10px;gap:8px}
 .price{font-size:var(--f-16);font-weight:500;font-variant-numeric:tabular-nums;color:var(--c-text)}
 .add{border:1px solid var(--c-text);color:var(--c-text);border-radius:999px;padding:7px 13px;font-size:var(--f-14);font-weight:500;transition:background .3s,color .3s,border-color .3s;white-space:nowrap}
 .add:hover:not(:disabled){background:var(--c-primary);border-color:var(--c-primary);color:var(--c-on-primary)}
@@ -285,3 +285,11 @@ body::after{content:"";position:fixed;inset:-50%;pointer-events:none;z-index:900
   color: var(--c-text);
   font-family: var(--sans);
 }
+
+/* Densidad del catálogo: tarjetas de altura uniforme, nombre de dos líneas máximo, precio alineado abajo. */
+.pcard{display:flex}
+.pcard-in{display:flex;flex-direction:column;flex:1;width:100%}
+.pbody h3{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:calc(2 * 1.2em)}
+.pbody .micro{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* Marco cuadrado para fotos de la diapositiva: no se estira ni desborda el carrusel. */
+.slide-photo-frame{position:relative;width:100%;aspect-ratio:1/1;border-radius:6px;overflow:hidden}

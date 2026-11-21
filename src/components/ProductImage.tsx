@@ -10,6 +10,8 @@ type Props = {
   tone: string;
   sizes?: string;
   priority?: boolean;
+  /** `contain` muestra el producto completo sin recortar; `cover` llena el marco. */
+  fit?: "cover" | "contain";
   children?: ReactNode;
 };
 
@@ -21,7 +23,7 @@ type Props = {
  *   y no dependen del optimizador de Next en el servidor.
  * El contenedor padre debe tener position relative (o absolute) y tamaño definido.
  */
-export function ProductImage({ src, alt, tone, sizes = "100vw", priority = false, children }: Props) {
+export function ProductImage({ src, alt, tone, sizes = "100vw", priority = false, fit = "cover", children }: Props) {
   const [failed, setFailed] = useState(false);
   const showPhoto = !!src && !failed;
 
@@ -40,7 +42,7 @@ export function ProductImage({ src, alt, tone, sizes = "100vw", priority = false
           unoptimized
           sizes={sizes}
           priority={priority}
-          style={{ objectFit: "cover" }}
+          style={{ objectFit: fit }}
           onError={() => setFailed(true)}
         />
       )}
