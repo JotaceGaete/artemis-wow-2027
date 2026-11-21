@@ -105,9 +105,15 @@ export default function ProductGallery({ items, name, tone }: Props) {
             aria-label={`Ver ${it.caption}`}
             aria-current={k === i}
             onClick={() => go(k)}
+            style={{ background: tone }}
           >
             {it.kind === "photo" ? (
-              <img src={photoUrl(it.photo)} alt="" loading="lazy" />
+              <img
+                src={photoUrl(it.photo)}
+                alt=""
+                loading="lazy"
+                onError={(e) => { e.currentTarget.style.display = "none"; }}
+              />
             ) : (
               <span className="pg-thumb-art" style={{ background: tone }}>
                 <Watch className="art-svg" />

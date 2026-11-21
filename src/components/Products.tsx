@@ -30,7 +30,7 @@ export default function Products({ added, onAdd }: { added: string[]; onAdd: (id
     <section className="section light" id="piezas" aria-labelledby="piezas-h">
       <header className="sec-head">
         <div>
-          <p className="kicker dark">Piezas</p>
+          <p className="kicker">Piezas</p>
           <h2 id="piezas-h" className="h2">Lo que está en la mesa esta semana</h2>
         </div>
         <p className="micro">{list.length} piezas</p>

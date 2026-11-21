@@ -67,6 +67,8 @@ export default function Hero() {
     const cv = dustRef.current;
     const g = cv?.getContext("2d");
     if (!cv || !g) return;
+    // Color de las partículas tomado del token --c-accent-rgb (una sola lectura al montar).
+    const dustRgb = getComputedStyle(document.documentElement).getPropertyValue("--c-accent-rgb").trim() || "233,154,187";
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
     let P: Particle[] = [];
     let raf = 0;
@@ -112,7 +114,7 @@ export default function Hero() {
         if (p.x > cv.width + 10) p.x = -10;
         g.beginPath();
         g.arc(p.x, p.y, p.r, 0, 6.283);
-        g.fillStyle = `rgba(232,196,143,${p.a})`;
+        g.fillStyle = `rgba(${dustRgb},${p.a})`;
         g.fill();
       }
       raf = requestAnimationFrame(draw);

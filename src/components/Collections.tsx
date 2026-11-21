@@ -11,7 +11,7 @@ export default function Collections() {
     <section className="section light" id="colecciones" aria-labelledby="col-h">
       <header className="sec-head">
         <div>
-          <p className="kicker dark">Colecciones</p>
+          <p className="kicker">Colecciones</p>
           <h2 id="col-h" className="h2">Tres maneras de mirar lo viejo</h2>
         </div>
         <a className="link" href="#piezas">Ver todas →</a>
