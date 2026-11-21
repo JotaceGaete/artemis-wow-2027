@@ -1,6 +1,6 @@
 import type { ObjectKey } from "./objects";
 
-/* Datos ficticios de demostración. Las rutas de fotos siguen la convención de public/photos/ (ver CREDITS.md). */
+/* Datos ficticios de demostración. Las fotos remotas se registran en src/lib/photos.ts (ver public/photos/CREDITS.md). */
 
 export const WORDS = [
   "Segunda selección",
@@ -11,7 +11,7 @@ export const WORDS = [
   "Objetos con historia",
 ];
 
-export type Campaign = { k: string; t: string; p: string; o: ObjectKey; c: string; pr: string; img: string; alt: string };
+export type Campaign = { k: string; t: string; p: string; o: ObjectKey; c: string; pr: string; alt: string };
 
 export const CAMPAIGNS: Campaign[] = [
   {
@@ -21,7 +21,6 @@ export const CAMPAIGNS: Campaign[] = [
     o: "watch",
     c: "#2F4B57",
     pr: "Desde $89.000",
-    img: "/photos/campana-tiempo.jpg",
     alt: "Relojes de bolsillo sobre papel de época",
   },
   {
@@ -31,7 +30,6 @@ export const CAMPAIGNS: Campaign[] = [
     o: "crescent",
     c: "#5A2E24",
     pr: "Desde $98.000",
-    img: "/photos/campana-luna.jpg",
     alt: "Objetos de bronce iluminados en una habitación oscura",
   },
   {
@@ -41,7 +39,6 @@ export const CAMPAIGNS: Campaign[] = [
     o: "vase",
     c: "#6B3B2C",
     pr: "Desde $56.000",
-    img: "/photos/campana-barro.jpg",
     alt: "Jarrones de gres sobre una mesa de madera",
   },
   {
@@ -51,7 +48,6 @@ export const CAMPAIGNS: Campaign[] = [
     o: "camera",
     c: "#1E3138",
     pr: "Desde $210.000",
-    img: "/photos/campana-lente.jpg",
     alt: "Cámara de fuelle junto a una ventana",
   },
 ];
@@ -83,8 +79,7 @@ export const EDITORIAL = {
   k: "Historia de la semana",
   t: "Un reloj que tardó cuarenta años en llegar a su casa",
   p: "Lo encontramos en un cajón de una casa de campo del sur. Tenía la cuerda rota, la tapa rayada y una dedicatoria en el interior. Lo restauramos sin borrar nada de eso.",
-  img: "/photos/ed-reloj.jpg",
-  alt: "Reloj de bolsillo sobre tela de lino",
+  alt: "Reloj de bolsillo plateado sobre una superficie oscura",
   tone: "#E6D3B8",
   o: "watch" as ObjectKey,
 };

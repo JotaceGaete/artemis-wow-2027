@@ -3,6 +3,7 @@ import { useState, type CSSProperties, type PointerEvent } from "react";
 import { CATEGORIES, PRODUCTS } from "@/lib/data";
 import { OBJECTS } from "@/lib/objects";
 import { ProductImage } from "./ProductImage";
+import { photoUrl } from "@/lib/photos";
 
 /** Grilla de productos con filtros. Inclinación 3D sutil solo en puntero fino. */
 export default function Products({ added, onAdd }: { added: string[]; onAdd: (id: string) => void }) {
@@ -47,7 +48,7 @@ export default function Products({ added, onAdd }: { added: string[]; onAdd: (id
             <article key={p.id} className="pcard">
               <div className="pcard-in" style={{ "--bg": p.bg } as CSSProperties} onPointerMove={tilt} onPointerLeave={untilt}>
                 <div className="pimg">
-                  <ProductImage src={`/photos/p-${p.id}.jpg`} alt={p.alt} tone={p.bg} sizes="(max-width:900px) 50vw, 25vw" label={p.cat}>
+                  <ProductImage src={photoUrl(p.id)} alt={p.alt} tone={p.bg} sizes="(max-width:900px) 50vw, 25vw">
                     <C className="art-svg" />
                   </ProductImage>
                   <span className="tag">{p.cat}</span>

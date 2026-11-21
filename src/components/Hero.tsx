@@ -3,10 +3,8 @@ import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { CAMPAIGNS } from "@/lib/data";
 import { OBJECTS } from "@/lib/objects";
 import { pointer } from "@/lib/hooks";
-import { PHOTOS_READY } from "@/lib/photos";
 import { Chars } from "./Chars";
 import { MagLink } from "./Magnetic";
-import { ProductImage } from "./ProductImage";
 
 type Particle = { x: number; y: number; vx: number; vy: number; r: number; a: number };
 
@@ -148,11 +146,6 @@ export default function Hero() {
             style={{ "--c": s.c } as CSSProperties}
             aria-hidden={!active}
           >
-            {PHOTOS_READY && (
-              <div className="slide-photo">
-                <ProductImage src={s.img} alt={s.alt} tone={s.c} sizes="100vw" priority={i === 0} />
-              </div>
-            )}
             <div className="slide-art" style={{ "--d": 1 } as CSSProperties}>
               <div className="slide-art-inner">
                 <C className="art-svg" />

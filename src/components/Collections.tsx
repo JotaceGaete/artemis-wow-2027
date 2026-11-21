@@ -3,6 +3,7 @@ import type { CSSProperties } from "react";
 import { COLLECTIONS } from "@/lib/data";
 import { OBJECTS } from "@/lib/objects";
 import { ProductImage } from "./ProductImage";
+import { photoUrl } from "@/lib/photos";
 
 /** Tres colecciones en composición asimétrica (bento). */
 export default function Collections() {
@@ -22,11 +23,10 @@ export default function Collections() {
             <a key={c.id} href="#piezas" className={`tile t${i}`} style={{ "--tone": c.tone } as CSSProperties}>
               <div className="tile-img">
                 <ProductImage
-                  src={`/photos/col-${c.id}.jpg`}
+                  src={photoUrl(`col-${c.id}`)}
                   alt={c.alt}
                   tone={c.tone}
                   sizes="(max-width:900px) 100vw, 50vw"
-                  label="Colección"
                 >
                   <C className="art-svg" />
                 </ProductImage>
