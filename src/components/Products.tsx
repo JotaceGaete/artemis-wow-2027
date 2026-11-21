@@ -1,9 +1,11 @@
 "use client";
 import { useState, type CSSProperties, type PointerEvent } from "react";
+import Link from "next/link";
 import { CATEGORIES, PRODUCTS } from "@/lib/data";
 import { OBJECTS } from "@/lib/objects";
 import { ProductImage } from "./ProductImage";
 import { photoUrl } from "@/lib/photos";
+import { PRODUCT_ROUTES } from "@/lib/product-detail";
 
 /** Grilla de productos con filtros. Inclinación 3D sutil solo en puntero fino. */
 export default function Products({ added, onAdd }: { added: string[]; onAdd: (id: string) => void }) {
@@ -44,17 +46,25 @@ export default function Products({ added, onAdd }: { added: string[]; onAdd: (id
         {list.map((p) => {
           const C = OBJECTS[p.o];
           const done = added.includes(p.id);
+          const href = PRODUCT_ROUTES[p.id];
+          const media = (
+            <>
+              <ProductImage src={photoUrl(p.id)} alt={p.alt} tone={p.bg} sizes="(max-width:900px) 50vw, 25vw">
+                <C className="art-svg" />
+              </ProductImage>
+              <span className="tag">{p.cat}</span>
+            </>
+          );
           return (
             <article key={p.id} className="pcard">
               <div className="pcard-in" style={{ "--bg": p.bg } as CSSProperties} onPointerMove={tilt} onPointerLeave={untilt}>
-                <div className="pimg">
-                  <ProductImage src={photoUrl(p.id)} alt={p.alt} tone={p.bg} sizes="(max-width:900px) 50vw, 25vw">
-                    <C className="art-svg" />
-                  </ProductImage>
-                  <span className="tag">{p.cat}</span>
-                </div>
+                {href ? (
+                  <Link href={href} className="pimg" aria-label={`Ver ${p.t}`} style={{ display: "block", color: "inherit" }}>{media}</Link>
+                ) : (
+                  <div className="pimg">{media}</div>
+                )}
                 <div className="pbody">
-                  <h3>{p.t}</h3>
+                  <h3>{href ? <Link href={href} style={{ color: "inherit" }}>{p.t}</Link> : p.t}</h3>
                   <p className="micro">{p.m}</p>
                   <div className="prow">
                     <b className="price">{p.p}</b>

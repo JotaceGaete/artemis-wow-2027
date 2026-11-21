@@ -1,20 +1,20 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 
-/** Navegación superior con menú móvil y contador del cajón. */
-export function Nav({ count }: { count: number }) {
+/** Navegación superior con menú móvil y contador del cajón. `base` apunta a la portada desde otras páginas. */
+export function Nav({ count, base = "" }: { count: number; base?: string }) {
   const [open, setOpen] = useState(false);
   return (
     <nav className="nav" aria-label="Principal">
-      <a className="logo" href="#top">ARTEMIS</a>
+      <a className="logo" href={`${base}#top`}>ARTEMIS</a>
       <button className="menu-btn" type="button" aria-expanded={open} onClick={() => setOpen((o) => !o)}>
         {open ? "Cerrar" : "Menú"}
       </button>
       <div className={`links ${open ? "open" : ""}`} onClick={() => setOpen(false)}>
-        <a href="#campanas">Campañas</a>
-        <a href="#colecciones">Colecciones</a>
-        <a href="#piezas">Piezas</a>
-        <a href="#musa">Musa</a>
+        <a href={`${base}#campanas`}>Campañas</a>
+        <a href={`${base}#colecciones`}>Colecciones</a>
+        <a href={`${base}#piezas`}>Piezas</a>
+        <a href={`${base}#musa`}>Musa</a>
       </div>
       <button className="cajon" type="button">Cajón (<span>{count}</span>)</button>
     </nav>

@@ -5,8 +5,23 @@ import { MagButton } from "./Magnetic";
 
 type Msg = { id: number; who: "bot" | "me"; text: string; typing?: boolean };
 
+type MusaProps = {
+  open: boolean;
+  setOpen: (v: boolean) => void;
+  /** Saludo, chips y respuestas propios (p. ej. una pieza). Por defecto, las generales de Artemis. */
+  greeting?: string;
+  chips?: string[];
+  answer?: (q: string) => string;
+};
+
 /** Musa: chat con respuestas simuladas (sin IA ni conexión a Walinka). */
-export default function Musa({ open, setOpen }: { open: boolean; setOpen: (v: boolean) => void }) {
+export default function Musa({
+  open,
+  setOpen,
+  greeting = MUSA_GREETING,
+  chips = MUSA_CHIPS,
+  answer = musaAnswer,
+}: MusaProps) {
   const [msgs, setMsgs] = useState<Msg[]>([]);
   const [text, setText] = useState("");
   const idRef = useRef(0);
@@ -25,16 +40,16 @@ export default function Musa({ open, setOpen }: { open: boolean; setOpen: (v: bo
 
   const ask = (q: string) => {
     setMsgs((m) => [...m, { id: ++idRef.current, who: "me", text: q }]);
-    botSay(musaAnswer(q), 1100);
+    botSay(answer(q), 1100);
   };
 
   // Saludo la primera vez que se abre.
   useEffect(() => {
     if (open && !started.current) {
       started.current = true;
-      botSay(MUSA_GREETING, 700);
+      botSay(greeting, 700);
     }
-  }, [open, botSay]);
+  }, [open, botSay, greeting]);
 
   useEffect(() => {
     const pending = timers.current;
@@ -79,7 +94,7 @@ export default function Musa({ open, setOpen }: { open: boolean; setOpen: (v: bo
           )}
         </div>
         <div className="chips">
-          {MUSA_CHIPS.map((q) => (
+          {chips.map((q) => (
             <button key={q} type="button" onClick={() => ask(q)}>{q}</button>
           ))}
         </div>
